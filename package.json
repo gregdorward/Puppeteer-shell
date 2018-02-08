@@ -1,0 +1,23 @@
+{
+  "name": "puppeteer-shell",
+  "version": "1.0.0",
+  "description": "The shell of a Puppeteer/Jest test suite",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest ./tests"
+  },
+  "devDependencies": {
+    "jest": "22.2.0",
+    "puppeteer": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gregdorward/Puppeteer-shell.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gregdorward/Puppeteer-shell/issues"
+  },
+  "homepage": "https://github.com/gregdorward/Puppeteer-shell#readme"
+}
