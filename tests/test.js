@@ -2,7 +2,8 @@
 
 const puppeteer = require('puppeteer');
 var commonMethods = require("./commonMethods");
-
+const devices = require('puppeteer/DeviceDescriptors');
+const iPhone = devices['iPhone 6'];
 let page;
 let browser;
 
@@ -49,10 +50,7 @@ describe('basic example UI tests', async () => {
     
     it('can output screenshots, even in headless mode', async () => {
         await page.goto('http://the-internet.herokuapp.com');
-        await page.setViewport({
-            width: 320,
-            height: 800
-        });
+        await page.emulate(iPhone);
         const subheading = await commonMethods.getTextContent(page, 'h2');
        const filePath = await './tests/screenshots/testScreenshot2.png';
         await page.screenshot({
