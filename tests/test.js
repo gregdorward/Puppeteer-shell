@@ -1,6 +1,8 @@
 'use strict';
 
 const puppeteer = require('puppeteer');
+var commonMethods = require("./commonMethods");
+
 let page;
 let browser;
 
@@ -24,18 +26,17 @@ describe('basic example UI tests', async () => {
     it('has the correct page heading - example of a failing test', async () => {
         await page.goto('http://the-internet.herokuapp.com');
         //extract the heading text from the h1 header element
-        const heading = await page.$eval('h1', el => el.textContent);
+        const heading = await commonMethods.getTextContent(page, 'h1');
         expect(heading).toEqual('Telcome to the-internet');
     })
 
     it('can interact with links', async () => {
         await page.goto('http://the-internet.herokuapp.com');
         //extract the link containing the text 'status codes'
-        const link = (await page.$x("//a[contains(text(), 'Status Codes')]"))[0];
+        let link = await commonMethods.findLinkByText(page, 'Status Codes');
         await link.click();
         await page.waitForNavigation();
-        let pageContent = await page.$eval('body', el => el.textContent);
-        console.log(pageContent);
+        let pageContent = await commonMethods.getTextContent(page, 'body');
         //check that the page displays all of the following codes
         await expect(pageContent).toContain
             (
@@ -52,7 +53,7 @@ describe('basic example UI tests', async () => {
             width: 320,
             height: 800
         });
-        const subheading = await page.$eval('h2', el => el.textContent);
+        const subheading = await commonMethods.getTextContent(page, 'h2');
        const filePath = await './tests/screenshots/testScreenshot2.png';
         await page.screenshot({
             path: filePath
@@ -62,7 +63,7 @@ describe('basic example UI tests', async () => {
 
     it('can be stubbed to return a given response', async () => {
         await page.goto('http://the-internet.herokuapp.com');
-        const link = (await page.$x("//a[contains(text(), 'Status Codes')]"))[0];
+        let link = await commonMethods.findLinkByText(page, 'Checkboxes');
         await page.setRequestInterception(true);
         await link.click();
         await page.on('request', request => {
@@ -73,7 +74,7 @@ describe('basic example UI tests', async () => {
             });
         });
         await page.waitForNavigation();
-        let pageContent = await page.$eval('body', el => el.textContent);
-        await expect(pageContent).toContain('Not Found!');
+        let textContent = await commonMethods.getTextContent(page, 'body');
+        await expect(textContent).toContain('Not Found!');
     })
 });
